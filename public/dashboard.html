@@ -1,0 +1,1928 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+    />
+    <title>Superior University Gaming Club - Team Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      :root {
+        --primary: #003087;
+        --primary-light: #1e5bb8;
+        --primary-dark: #001f5c;
+        --secondary: #ffd700;
+        --secondary-light: #ffe44d;
+        --secondary-dark: #d4af37;
+        --accent: #00a8e8;
+        --accent-dark: #0077b6;
+        --success: #28a745;
+        --warning: #ffa500;
+        --danger: #dc3545;
+        --dark: #0a0f1e;
+        --dark-card: #0f1729;
+        --dark-hover: #152239;
+        --text: #ffffff;
+        --text-muted: #b8c5d6;
+        --border: #1e3a5f;
+        --gold-glow: rgba(255, 215, 0, 0.3);
+        --blue-glow: rgba(0, 48, 135, 0.4);
+        --superior-gradient: linear-gradient(135deg, #003087, #1e5bb8, #00a8e8);
+        --gold-gradient: linear-gradient(135deg, #ffd700, #ffa500, #d4af37);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #0a0f1e 0%,
+          #152239 25%,
+          #003087 50%,
+          #152239 75%,
+          #0a0f1e 100%
+        );
+        background-size: 400% 400%;
+        animation: superiorGradient 15s ease infinite;
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      @keyframes superiorGradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* Animated Background */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background:
+          radial-gradient(
+            circle at 20% 20%,
+            var(--blue-glow) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            var(--gold-glow) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 50% 50%,
+            rgba(0, 168, 232, 0.15) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+        z-index: 0;
+        animation: bgPulse 15s ease-in-out infinite;
+      }
+
+      /* Superior University watermark pattern */
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image:
+          repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 100px,
+            rgba(255, 215, 0, 0.02) 100px,
+            rgba(255, 215, 0, 0.02) 200px
+          ),
+          repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 100px,
+            rgba(0, 48, 135, 0.03) 100px,
+            rgba(0, 48, 135, 0.03) 200px
+          );
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.6;
+      }
+
+      @keyframes bgPulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      /* Floating particles */
+      .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: var(--secondary);
+        border-radius: 50%;
+        opacity: 0.4;
+        animation: float 20s infinite;
+        box-shadow: 0 0 10px var(--secondary);
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) translateX(0);
+        }
+        25% {
+          transform: translateY(-100px) translateX(50px);
+        }
+        50% {
+          transform: translateY(-200px) translateX(-50px);
+        }
+        75% {
+          transform: translateY(-100px) translateX(100px);
+        }
+      }
+
+      .container {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 1rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ========== LOGIN SCREEN ========== */
+      .login-screen {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 1rem;
+      }
+
+      .login-card {
+        background: rgba(19, 21, 42, 0.9);
+        backdrop-filter: blur(40px);
+        border: 2px solid var(--border);
+        border-radius: 20px;
+        padding: 2rem;
+        max-width: 500px;
+        width: 100%;
+        box-shadow:
+          0 30px 90px rgba(0, 0, 0, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .login-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          var(--blue-glow) 0%,
+          var(--gold-glow) 50%,
+          transparent 70%
+        );
+        animation: rotate 20s linear infinite;
+        opacity: 0.4;
+      }
+
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(50px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .logo {
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .logo h1 {
+        font-family: "Orbitron", sans-serif;
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 900;
+        background: var(--gold-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 60px var(--gold-glow);
+        animation: goldGlow 3s ease-in-out infinite;
+        letter-spacing: 2px;
+      }
+
+      @keyframes goldGlow {
+        0%,
+        100% {
+          filter: brightness(1) drop-shadow(0 0 20px #ffd700);
+        }
+        50% {
+          filter: brightness(1.4) drop-shadow(0 0 40px #ffd700);
+        }
+      }
+
+      .logo p {
+        color: var(--secondary);
+        font-size: clamp(0.8rem, 2vw, 1rem);
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        text-shadow: 0 0 10px var(--gold-glow);
+      }
+
+      .role-selector {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .role-btn {
+        padding: 1rem;
+        background: var(--dark-card);
+        border: 2px solid var(--border);
+        border-radius: 16px;
+        color: var(--text);
+        font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+        touch-action: manipulation;
+      }
+
+      .role-btn::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: radial-gradient(circle, rgba(0, 48, 135, 0.5), transparent);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.6s,
+          height 0.6s;
+      }
+
+      .role-btn:active::before {
+        width: 300px;
+        height: 300px;
+      }
+
+      .role-btn:hover {
+        border-color: var(--secondary);
+        transform: translateY(-3px);
+        box-shadow:
+          0 10px 40px var(--gold-glow),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+
+      .role-btn.active {
+        background: var(--superior-gradient);
+        border-color: var(--secondary);
+        box-shadow:
+          0 10px 40px var(--blue-glow),
+          0 0 30px var(--gold-glow),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      .login-form {
+        position: relative;
+        z-index: 1;
+      }
+
+      .input-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .input-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--text-muted);
+        font-size: clamp(0.85rem, 2vw, 0.95rem);
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+
+      .input-group select,
+      .input-group input {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        background: var(--dark);
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        color: var(--text);
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+        font-weight: 500;
+        transition: all 0.3s;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .input-group select:focus,
+      .input-group input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(0, 48, 135, 0.1);
+      }
+
+      .input-group select option {
+        background: var(--dark-card);
+        color: var(--text);
+        padding: 0.5rem;
+      }
+
+      .login-btn {
+        width: 100%;
+        padding: 1.2rem;
+        background: var(--gold-gradient);
+        border: 2px solid var(--secondary);
+        border-radius: 12px;
+        color: var(--dark);
+        font-size: clamp(1rem, 2.5vw, 1.1rem);
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow:
+          0 10px 30px var(--gold-glow),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+        touch-action: manipulation;
+        letter-spacing: 1px;
+      }
+
+      .login-btn::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.6s,
+          height 0.6s;
+      }
+
+      .login-btn:active::before {
+        width: 400px;
+        height: 400px;
+      }
+
+      .login-btn:hover {
+        transform: translateY(-3px);
+        box-shadow:
+          0 15px 50px var(--gold-glow),
+          0 0 40px var(--secondary),
+          inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        border-color: #fff;
+      }
+
+      /* ========== DASHBOARD LAYOUT ========== */
+      .dashboard {
+        display: none;
+      }
+
+      .dashboard.active {
+        display: block;
+      }
+
+      .header {
+        background: rgba(19, 21, 42, 0.9);
+        backdrop-filter: blur(40px);
+        border: 2px solid var(--border);
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+
+      .header-left h2 {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-weight: 800;
+        background: var(--gold-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 30px var(--gold-glow);
+      }
+
+      .header-left p {
+        color: var(--text-muted);
+        font-size: clamp(0.85rem, 2vw, 1rem);
+      }
+
+      .logout-btn {
+        padding: 0.8rem 1.5rem;
+        background: linear-gradient(135deg, var(--danger), var(--accent-dark));
+        border: none;
+        border-radius: 12px;
+        color: var(--text);
+        font-size: clamp(0.85rem, 2vw, 1rem);
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 5px 20px rgba(220, 53, 69, 0.3);
+        touch-action: manipulation;
+      }
+
+      .logout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+      }
+
+      /* ========== STATS GRID ========== */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .stat-card {
+        background: rgba(19, 21, 42, 0.9);
+        backdrop-filter: blur(40px);
+        border: 2px solid var(--border);
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow:
+          0 15px 40px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--gold-gradient);
+        box-shadow: 0 0 10px var(--secondary);
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--secondary);
+        box-shadow:
+          0 20px 50px var(--blue-glow),
+          0 0 30px var(--gold-glow),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      }
+
+      .stat-label {
+        color: var(--text-muted);
+        font-size: clamp(0.8rem, 2vw, 0.95rem);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .stat-value {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 900;
+        background: var(--gold-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 20px var(--gold-glow));
+      }
+
+      /* ========== CONTENT GRID ========== */
+      .content-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr));
+        gap: 1.5rem;
+      }
+
+      .card {
+        background: rgba(19, 21, 42, 0.9);
+        backdrop-filter: blur(40px);
+        border: 2px solid var(--border);
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+
+      .card h3 {
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        background: var(--gold-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 15px var(--gold-glow));
+      }
+
+      /* ========== MEMBER PROFILE HEADER ========== */
+      .member-profile-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 2rem;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 48, 135, 0.1),
+          rgba(0, 168, 232, 0.1)
+        );
+        border-radius: 16px;
+        margin-bottom: 2rem;
+        border: 2px solid var(--border);
+      }
+
+      .profile-avatar-large {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: var(--superior-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: var(--text);
+        border: 4px solid var(--secondary);
+        flex-shrink: 0;
+        overflow: hidden;
+        box-shadow:
+          0 0 30px var(--blue-glow),
+          0 0 50px var(--gold-glow);
+      }
+
+      .profile-avatar-large img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .profile-info h2 {
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+      }
+
+      .profile-info p {
+        color: var(--text-muted);
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
+      }
+
+      /* ========== TEAM MEMBERS LIST ========== */
+      .team-list {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .team-member,
+      .member-card {
+        background: var(--dark-card);
+        border: 2px solid var(--border);
+        border-radius: 16px;
+        padding: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+
+      .team-member:hover,
+      .member-card:hover {
+        border-color: var(--secondary);
+        transform: translateX(5px);
+        box-shadow:
+          0 10px 30px var(--blue-glow),
+          0 0 20px var(--gold-glow);
+      }
+
+      /* Member Management Grid */
+      .member-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+
+      .member-card {
+        background: var(--dark-card);
+        border: 2px solid var(--border);
+        border-radius: 20px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        display: block;
+      }
+
+      .member-card:hover {
+        border-color: var(--secondary);
+        transform: translateY(-5px);
+        box-shadow:
+          0 15px 40px var(--blue-glow),
+          0 0 30px var(--gold-glow);
+      }
+
+      .member-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .member-inputs {
+        margin-bottom: 1rem;
+      }
+
+      .member-inputs select,
+      .member-inputs input[type="text"] {
+        width: 100%;
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+        background: var(--dark);
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        font-size: 0.9rem;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .profile-pic-upload {
+        margin-bottom: 0.75rem;
+      }
+
+      .profile-pic-upload label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .pic-upload-container {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      .pic-preview {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--dark);
+        border: 2px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+
+      .pic-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .pic-preview.empty {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+      }
+
+      .upload-btn {
+        flex: 1;
+        padding: 0.75rem;
+        background: var(--superior-gradient);
+        border: 2px solid var(--accent);
+        border-radius: 10px;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.85rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 5px 15px var(--blue-glow);
+      }
+
+      .upload-btn:hover {
+        transform: translateY(-2px);
+        box-shadow:
+          0 8px 20px var(--blue-glow),
+          0 0 30px var(--accent);
+        border-color: var(--secondary);
+      }
+
+      .upload-btn input[type="file"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .remove-pic-btn {
+        padding: 0.75rem 1rem;
+        background: var(--danger);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.85rem;
+      }
+
+      .remove-pic-btn:hover {
+        background: #d63031;
+        transform: translateY(-2px);
+      }
+
+      .score-inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .score-input-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .score-input-group label {
+        flex: 1;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        font-weight: 600;
+      }
+
+      .score-input-group input {
+        width: 70px;
+        padding: 0.5rem;
+        text-align: center;
+        background: var(--dark);
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .member-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--superior-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: var(--text);
+        flex-shrink: 0;
+        overflow: hidden;
+        box-shadow: 0 0 20px var(--blue-glow);
+        border: 2px solid var(--secondary);
+      }
+
+      .member-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .member-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .member-name {
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+        color: var(--text);
+      }
+
+      .member-description {
+        color: var(--text-muted);
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        margin-bottom: 0.5rem;
+      }
+
+      .member-score {
+        font-size: clamp(0.85rem, 2vw, 0.95rem);
+        color: var(--primary-light);
+        font-weight: 600;
+      }
+
+      /* ========== ROLE BADGES ========== */
+      .role-badge {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        border-radius: 8px;
+        font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+      }
+
+      .role-badge.leader {
+        background: var(--gold-gradient);
+        color: var(--dark);
+        font-weight: 900;
+        box-shadow: 0 0 15px var(--gold-glow);
+      }
+
+      .role-badge.organizer {
+        background: var(--superior-gradient);
+        color: var(--text);
+        box-shadow: 0 0 15px var(--blue-glow);
+      }
+
+      .role-badge.manager {
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        color: var(--text);
+        box-shadow: 0 0 10px rgba(0, 168, 232, 0.4);
+      }
+
+      .role-badge.member {
+        background: linear-gradient(
+          135deg,
+          var(--primary-light),
+          var(--primary)
+        );
+        color: var(--text);
+      }
+
+      /* ========== CATEGORY LIST ========== */
+      .category-list {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .category-item {
+        background: var(--dark-card);
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .category-name {
+        font-weight: 600;
+        color: var(--text);
+        font-size: clamp(0.9rem, 2vw, 1rem);
+      }
+
+      .category-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .category-actions button {
+        padding: 0.5rem 1rem;
+        background: var(--primary);
+        border: none;
+        border-radius: 8px;
+        color: var(--text);
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        touch-action: manipulation;
+      }
+
+      .category-actions button:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+      }
+
+      .category-actions button.delete-btn {
+        background: var(--danger);
+      }
+
+      .category-actions button.delete-btn:hover {
+        background: #e74c3c;
+      }
+
+      .category-score {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex: 1;
+        min-width: 150px;
+      }
+
+      .progress-bar {
+        flex: 1;
+        height: 12px;
+        background: var(--dark);
+        border-radius: 6px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: var(--gold-gradient);
+        transition: width 0.5s ease;
+        border-radius: 6px;
+        box-shadow: 0 0 15px var(--gold-glow);
+      }
+
+      .score-text {
+        font-weight: 700;
+        color: var(--secondary);
+        font-size: clamp(0.85rem, 2vw, 0.95rem);
+        min-width: 45px;
+        text-align: right;
+        text-shadow: 0 0 10px var(--gold-glow);
+      }
+
+      /* ========== FORMS ========== */
+      .add-form {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .add-form input {
+        flex: 1;
+        min-width: 200px;
+        padding: 0.9rem 1.2rem;
+        background: var(--dark);
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        color: var(--text);
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        font-weight: 500;
+        transition: all 0.3s;
+      }
+
+      .add-form input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(0, 48, 135, 0.1);
+      }
+
+      .add-form button {
+        padding: 0.9rem 1.8rem;
+        background: var(--gold-gradient);
+        border: 2px solid var(--secondary);
+        border-radius: 12px;
+        color: var(--dark);
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.3s;
+        white-space: nowrap;
+        box-shadow: 0 5px 20px var(--gold-glow);
+        touch-action: manipulation;
+      }
+
+      .add-form button:hover {
+        transform: translateY(-2px);
+        box-shadow:
+          0 8px 30px var(--gold-glow),
+          0 0 40px var(--secondary);
+        border-color: #fff;
+      }
+
+      .delete-btn {
+        padding: 0.5rem 1rem;
+        background: var(--danger);
+        border: none;
+        border-radius: 8px;
+        color: var(--text);
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      /* ========== CHART CONTAINER ========== */
+      .chart-container {
+        position: relative;
+        height: 400px;
+        margin-top: 1.5rem;
+      }
+
+      @media (max-width: 768px) {
+        .chart-container {
+          height: 350px;
+        }
+
+        .header {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .member-profile-header {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .category-item {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .category-score {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .chart-container {
+          height: 300px;
+        }
+
+        .container {
+          padding: 0.5rem;
+        }
+
+        .header,
+        .card,
+        .login-card {
+          padding: 1rem;
+          border-radius: 12px;
+        }
+
+        .stat-card {
+          padding: 1rem;
+        }
+
+        .add-form {
+          flex-direction: column;
+        }
+
+        .add-form input,
+        .add-form button {
+          width: 100%;
+        }
+      }
+
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="particles" id="particles"></div>
+
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+      <div class="login-card">
+        <div class="logo">
+          <h1>SUPERIOR UNIVERSITY</h1>
+          <p>NGO Team Dashboard</p>
+        </div>
+
+        <div class="role-selector">
+          <button
+            class="role-btn active"
+            data-role="member"
+            onclick="selectRole('member')"
+          >
+            👤 Member
+          </button>
+          <button
+            class="role-btn"
+            data-role="admin"
+            onclick="selectRole('admin')"
+          >
+            🛡️ Admin
+          </button>
+        </div>
+
+        <div class="login-form">
+          <div id="memberLogin">
+            <div class="input-group">
+              <label for="memberSelect">Select Your Name</label>
+              <select id="memberSelect"></select>
+            </div>
+            <button class="login-btn" onclick="login()">
+              🚀 Enter Dashboard
+            </button>
+          </div>
+
+          <div id="adminLogin" class="hidden">
+            <div class="input-group">
+              <label for="adminPassword">Admin Password</label>
+              <input
+                type="password"
+                id="adminPassword"
+                placeholder="Enter password"
+              />
+            </div>
+            <button class="login-btn" onclick="login()">
+              🔐 Access Admin Panel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Member Dashboard -->
+    <div class="dashboard" id="memberDashboard">
+      <div class="container">
+        <div class="header">
+          <div class="header-left">
+            <h2>👋 Welcome, <span id="memberName">Member</span>!</h2>
+            <p>Track your progress and compete with your team</p>
+          </div>
+          <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+        </div>
+
+        <div class="member-profile-header">
+          <div class="profile-avatar-large" id="memberHeaderAvatar">JD</div>
+          <div class="profile-info">
+            <h2 id="memberNameHeader"></h2>
+            <p id="memberRole">Team Member</p>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Overall Score</div>
+            <div class="stat-value" id="memberOverallScore">0%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Your Rank</div>
+            <div class="stat-value" id="memberRank">#-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Tasks Completed</div>
+            <div class="stat-value" id="memberCompleted">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Team Average</div>
+            <div class="stat-value" id="teamAverage">0%</div>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="card">
+            <h3>📊 Your Performance</h3>
+            <div class="chart-container">
+              <canvas id="memberChart"></canvas>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>📋 Your Categories</h3>
+            <div class="category-list" id="memberCategories"></div>
+          </div>
+
+          <div class="card">
+            <h3>🏆 Team Leaderboard</h3>
+            <div class="team-list" id="leaderboard"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="dashboard" id="adminDashboard">
+      <div class="container">
+        <div class="header">
+          <div class="header-left">
+            <h2>🛡️ Admin Control Panel</h2>
+            <p>Manage team members and track overall progress</p>
+          </div>
+          <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Members</div>
+            <div class="stat-value" id="totalMembers">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Categories</div>
+            <div class="stat-value" id="totalCategories">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Average Score</div>
+            <div class="stat-value" id="avgScore">0%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Top Performer</div>
+            <div class="stat-value" id="topPerformer">-</div>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="card">
+            <h3>📂 Manage Categories</h3>
+            <div class="add-form">
+              <input
+                type="text"
+                id="newCategory"
+                placeholder="Enter category name"
+              />
+              <button onclick="addCategory()">➕ Add Category</button>
+            </div>
+            <div class="category-list" id="categoryList"></div>
+          </div>
+
+          <div class="card">
+            <h3>👥 Team Members</h3>
+            <div id="membersList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const API_URL = "http://127.0.0.1:8000/api";
+
+      let members = [];
+      let categories = [];
+      let currentRole = "member";
+      let currentUser = null;
+      let memberChart = null;
+
+      // Create particles
+      function createParticles() {
+        const container = document.getElementById("particles");
+        for (let i = 0; i < 30; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle";
+          particle.style.left = Math.random() * 100 + "%";
+          particle.style.top = Math.random() * 100 + "%";
+          particle.style.animationDelay = Math.random() * 20 + "s";
+          particle.style.animationDuration = 15 + Math.random() * 10 + "s";
+          container.appendChild(particle);
+        }
+      }
+
+      // Fetch members from database
+      async function loadMembers() {
+        try {
+          const response = await fetch(`${API_URL}/members`);
+          members = await response.json();
+
+          const select = document.getElementById("memberSelect");
+          select.innerHTML = "";
+          members.forEach((member) => {
+            const option = document.createElement("option");
+            option.value = member.id;
+            option.textContent = member.name;
+            select.appendChild(option);
+          });
+        } catch (error) {
+          console.error("Error loading members:", error);
+          alert(
+            "Database connection failed! Make sure Laravel server is running:\nphp artisan serve",
+          );
+        }
+      }
+
+      // Fetch categories from database
+      async function loadCategories() {
+        try {
+          const response = await fetch(`${API_URL}/categories`);
+          categories = await response.json();
+        } catch (error) {
+          console.error("Error loading categories:", error);
+        }
+      }
+
+      function selectRole(role) {
+        currentRole = role;
+        document
+          .querySelectorAll(".role-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        document.querySelector(`[data-role="${role}"]`).classList.add("active");
+
+        if (role === "member") {
+          document.getElementById("memberLogin").classList.remove("hidden");
+          document.getElementById("adminLogin").classList.add("hidden");
+        } else {
+          document.getElementById("memberLogin").classList.add("hidden");
+          document.getElementById("adminLogin").classList.remove("hidden");
+        }
+      }
+
+      async function login() {
+        if (currentRole === "member") {
+          const memberSelect = document.getElementById("memberSelect");
+          const memberId = memberSelect.value;
+
+          if (!memberId) {
+            alert("Please select your name");
+            return;
+          }
+
+          currentUser = members.find((m) => m.id == memberId);
+
+          document.getElementById("loginScreen").style.display = "none";
+          document.getElementById("memberDashboard").classList.add("active");
+          renderMemberDashboard(currentUser);
+        } else {
+          const password = document.getElementById("adminPassword").value;
+
+          try {
+            const response = await fetch(`${API_URL}/admin/login`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ password }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+              document.getElementById("loginScreen").style.display = "none";
+              document.getElementById("adminDashboard").classList.add("active");
+              renderAdminDashboard();
+            } else {
+              alert("Incorrect password!");
+            }
+          } catch (error) {
+            console.error("Login error:", error);
+            alert("Login failed!");
+          }
+        }
+      }
+
+      function logout() {
+        document.getElementById("loginScreen").style.display = "flex";
+        document.getElementById("memberDashboard").classList.remove("active");
+        document.getElementById("adminDashboard").classList.remove("active");
+        document.getElementById("adminPassword").value = "";
+        currentUser = null;
+      }
+
+      function getRoleName(role) {
+        const roleNames = {
+          leader: "Team Leader - Idea Giver",
+          organizer: "Idea Giver - Organizer",
+          manager: "Manager",
+          member: "Members",
+        };
+        return roleNames[role] || "Members";
+      }
+
+      // MEMBER DASHBOARD
+      function renderMemberDashboard(member) {
+        const firstName = member.name.split(" ")[0];
+        document.getElementById("memberName").textContent = firstName;
+        document.getElementById("memberNameHeader").textContent = member.name;
+
+        const initials = member.name
+          .split(" ")
+          .map((n) => n[0])
+          .join("");
+        const headerAvatar = document.getElementById("memberHeaderAvatar");
+
+        if (member.profilePic) {
+          headerAvatar.innerHTML = `<img src="${member.profilePic}" alt="${member.name}">`;
+        } else {
+          headerAvatar.textContent = initials;
+        }
+
+        document.getElementById("memberRole").textContent =
+          `${getRoleName(member.role)} • ${member.description}`;
+
+        const overallScore = calculateOverallScore(member.scores);
+        document.getElementById("memberOverallScore").textContent =
+          overallScore + "%";
+
+        const allScores = members
+          .map((m) => ({
+            member: m,
+            score: calculateOverallScore(m.scores),
+          }))
+          .sort((a, b) => b.score - a.score);
+
+        const rank = allScores.findIndex((m) => m.member.id === member.id) + 1;
+        document.getElementById("memberRank").textContent = `#${rank}`;
+
+        const completed = Object.values(member.scores).filter(
+          (score) => score >= 70,
+        ).length;
+        document.getElementById("memberCompleted").textContent = completed;
+
+        const totalAvg =
+          allScores.reduce((sum, m) => sum + m.score, 0) / allScores.length;
+        document.getElementById("teamAverage").textContent =
+          Math.round(totalAvg) + "%";
+
+        renderMemberChart(member);
+        renderMemberCategories(member);
+        renderLeaderboard(allScores);
+      }
+
+      function renderMemberChart(member) {
+        const ctx = document.getElementById("memberChart");
+
+        if (memberChart) {
+          memberChart.destroy();
+        }
+
+        const scores = categories.map((cat) => member.scores[cat] || 0);
+
+        memberChart = new Chart(ctx, {
+          type: "radar",
+          data: {
+            labels: categories,
+            datasets: [
+              {
+                label: "Your Score",
+                data: scores,
+                backgroundColor: "rgba(0, 48, 135, 0.3)",
+                borderColor: "#003087",
+                borderWidth: 3,
+                pointBackgroundColor: "#003087",
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "#003087",
+                pointRadius: 6,
+                pointHoverRadius: 8,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+              r: {
+                beginAtZero: true,
+                max: 100,
+                ticks: {
+                  color: "#B8C5D6",
+                  backdropColor: "transparent",
+                  font: {
+                    size: 12,
+                    weight: 600,
+                  },
+                },
+                grid: {
+                  color: "rgba(184, 197, 214, 0.15)",
+                },
+                pointLabels: {
+                  color: "#FFFFFF",
+                  font: {
+                    size: window.innerWidth < 576 ? 10 : 14,
+                    weight: 600,
+                  },
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+          },
+        });
+      }
+
+      function renderMemberCategories(member) {
+        const container = document.getElementById("memberCategories");
+        container.innerHTML = "";
+
+        categories.forEach((category) => {
+          const score = member.scores[category] || 0;
+          const item = document.createElement("div");
+          item.className = "category-item";
+          item.innerHTML = `
+                    <span class="category-name">${category}</span>
+                    <div class="category-score">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${score}%"></div>
+                        </div>
+                        <span class="score-text">${score}%</span>
+                    </div>
+                `;
+          container.appendChild(item);
+        });
+      }
+
+      function renderLeaderboard(allScores) {
+        const container = document.getElementById("leaderboard");
+        container.innerHTML = "";
+
+        allScores.forEach((item, index) => {
+          const member = item.member;
+          const initials = member.name
+            .split(" ")
+            .map((n) => n[0])
+            .join("");
+
+          const div = document.createElement("div");
+          div.className = "team-member";
+          div.innerHTML = `
+                    <div class="member-avatar">
+                        ${member.profilePic ? `<img src="${member.profilePic}" alt="${member.name}">` : initials}
+                    </div>
+                    <div class="member-info">
+                        <div class="member-name">
+                            ${index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : ""} 
+                            #${index + 1} ${member.name}
+                        </div>
+                        <span class="role-badge ${member.role}">${getRoleName(member.role)}</span>
+                        <div class="member-description">${member.description}</div>
+                        <div style="color: var(--secondary); font-weight: 700; margin-top: 0.5rem;">
+                            Overall Score: ${item.score}%
+                        </div>
+                    </div>
+                `;
+          container.appendChild(div);
+        });
+      }
+
+      // ADMIN DASHBOARD
+      async function renderAdminDashboard() {
+        await loadCategories();
+
+        document.getElementById("totalMembers").textContent = members.length;
+        document.getElementById("totalCategories").textContent =
+          categories.length;
+
+        const allScores = members.map((m) => calculateOverallScore(m.scores));
+        const avgScore =
+          allScores.reduce((sum, s) => sum + s, 0) / allScores.length;
+        document.getElementById("avgScore").textContent =
+          Math.round(avgScore) + "%";
+
+        const topMember = members.reduce((top, m) => {
+          const score = calculateOverallScore(m.scores);
+          return score > calculateOverallScore(top.scores) ? m : top;
+        });
+        document.getElementById("topPerformer").textContent =
+          topMember.name.split(" ")[0];
+
+        renderCategoryList();
+        renderMembersList();
+      }
+
+      function renderCategoryList() {
+        const container = document.getElementById("categoryList");
+        container.innerHTML = "";
+
+        categories.forEach((category) => {
+          const item = document.createElement("div");
+          item.className = "category-item";
+          item.innerHTML = `
+                    <span class="category-name">${category}</span>
+                    <div class="category-actions">
+                        <button class="delete-btn" onclick="deleteCategory('${category}')">🗑️ Delete</button>
+                    </div>
+                `;
+          container.appendChild(item);
+        });
+      }
+
+      function renderMembersList() {
+        const container = document.getElementById("membersList");
+        container.innerHTML = "";
+
+        members.forEach((member) => {
+          const initials = member.name
+            .split(" ")
+            .map((n) => n[0])
+            .join("");
+          const overallScore = calculateOverallScore(member.scores);
+
+          const card = document.createElement("div");
+          card.className = "member-card";
+
+          let scoresHTML = "";
+          categories.forEach((category) => {
+            const score = member.scores[category] || 0;
+            scoresHTML += `
+                        <div class="score-input-group">
+                            <label>${category}</label>
+                            <input type="number" min="0" max="100" value="${score}" 
+                                   onchange="updateScore(${member.id}, '${category}', this.value)">
+                        </div>
+                    `;
+          });
+
+          card.innerHTML = `
+                    <div class="member-header">
+                        <div class="member-avatar">
+                            ${member.profilePic ? `<img src="${member.profilePic}" alt="${member.name}">` : initials}
+                        </div>
+                        <div class="member-info">
+                            <h3>${member.name}</h3>
+                            <span class="role-badge ${member.role}">${getRoleName(member.role)}</span>
+                            <div class="member-description">${member.description}</div>
+                            <div style="color: var(--secondary); font-weight: 700; margin-top: 0.5rem;">
+                                Overall Score: ${overallScore}%
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="member-inputs">
+                        <div class="profile-pic-upload">
+                            <label>📸 Profile Picture</label>
+                            <div class="pic-upload-container">
+                                <div class="pic-preview ${member.profilePic ? "" : "empty"}" id="preview-${member.id}">
+                                    ${member.profilePic ? `<img src="${member.profilePic}" alt="${member.name}">` : "No Image"}
+                                </div>
+                                <button class="upload-btn" type="button">
+                                    📤 Upload Image
+                                    <input type="file" accept="image/*" onchange="handleProfilePicUpload(${member.id}, this)">
+                                </button>
+                                ${member.profilePic ? `<button class="remove-pic-btn" type="button" onclick="removeProfilePic(${member.id})">🗑️ Remove</button>` : ""}
+                            </div>
+                        </div>
+                        
+                        <select onchange="updateMemberRole(${member.id}, this.value)">
+                            <option value="leader" ${member.role === "leader" ? "selected" : ""}>Team Leader - Idea Giver</option>
+                            <option value="organizer" ${member.role === "organizer" ? "selected" : ""}>Idea Giver - Organizer</option>
+                            <option value="manager" ${member.role === "manager" ? "selected" : ""}>Manager</option>
+                            <option value="member" ${member.role === "member" ? "selected" : ""}>Members</option>
+                        </select>
+                        <input type="text" placeholder="Description/Features" 
+                               value="${member.description}" 
+                               onchange="updateMemberDescription(${member.id}, this.value)">
+                    </div>
+                    
+                    <div class="score-inputs">
+                        ${scoresHTML}
+                    </div>
+                `;
+
+          container.appendChild(card);
+        });
+      }
+
+      async function updateScore(memberId, category, value) {
+        try {
+          await fetch(`${API_URL}/score/update`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              member_id: memberId,
+              category: category,
+              score: parseInt(value),
+            }),
+          });
+
+          await loadMembers();
+          renderAdminDashboard();
+        } catch (error) {
+          console.error("Error updating score:", error);
+        }
+      }
+
+      async function addCategory() {
+        const input = document.getElementById("newCategory");
+        const name = input.value.trim();
+
+        if (!name) {
+          alert("Please enter a category name");
+          return;
+        }
+
+        try {
+          await fetch(`${API_URL}/category/add`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name }),
+          });
+
+          input.value = "";
+          await loadCategories();
+          await loadMembers();
+          renderAdminDashboard();
+        } catch (error) {
+          console.error("Error adding category:", error);
+        }
+      }
+
+      async function deleteCategory(name) {
+        if (!confirm(`Delete "${name}"?`)) return;
+
+        try {
+          await fetch(`${API_URL}/category/delete`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name }),
+          });
+
+          await loadCategories();
+          await loadMembers();
+          renderAdminDashboard();
+        } catch (error) {
+          console.error("Error deleting category:", error);
+        }
+      }
+
+      function handleProfilePicUpload(memberId, input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        if (!file.type.startsWith("image/")) {
+          alert("Please upload an image file!");
+          return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+          alert("Image size should be less than 5MB!");
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = async function (e) {
+          try {
+            const member = members.find((m) => m.id == memberId);
+            await fetch(`${API_URL}/member/update`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                member_id: memberId,
+                profile_pic: e.target.result,
+                role: member.role,
+                description: member.description,
+              }),
+            });
+
+            await loadMembers();
+            renderAdminDashboard();
+          } catch (error) {
+            console.error("Error uploading picture:", error);
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+
+      async function removeProfilePic(memberId) {
+        if (!confirm("Remove profile picture?")) return;
+
+        try {
+          const member = members.find((m) => m.id == memberId);
+          await fetch(`${API_URL}/member/update`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              member_id: memberId,
+              profile_pic: "",
+              role: member.role,
+              description: member.description,
+            }),
+          });
+
+          await loadMembers();
+          renderAdminDashboard();
+        } catch (error) {
+          console.error("Error removing picture:", error);
+        }
+      }
+
+      async function updateMemberRole(memberId, role) {
+        try {
+          const member = members.find((m) => m.id == memberId);
+          await fetch(`${API_URL}/member/update`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              member_id: memberId,
+              role: role,
+              description: member.description,
+              profile_pic: member.profilePic,
+            }),
+          });
+
+          await loadMembers();
+          renderAdminDashboard();
+        } catch (error) {
+          console.error("Error updating role:", error);
+        }
+      }
+
+      async function updateMemberDescription(memberId, description) {
+        try {
+          const member = members.find((m) => m.id == memberId);
+          await fetch(`${API_URL}/member/update`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              member_id: memberId,
+              description: description,
+              role: member.role,
+              profile_pic: member.profilePic,
+            }),
+          });
+
+          await loadMembers();
+        } catch (error) {
+          console.error("Error updating description:", error);
+        }
+      }
+
+      function calculateOverallScore(scores) {
+        const values = Object.values(scores);
+        if (values.length === 0) return 0;
+        return Math.round(
+          values.reduce((sum, s) => sum + s, 0) / values.length,
+        );
+      }
+
+      // Handle window resize for chart
+      window.addEventListener("resize", () => {
+        if (memberChart && currentUser && currentRole === "member") {
+          renderMemberChart(currentUser);
+        }
+      });
+
+      // Initialize
+      createParticles();
+      loadMembers();
+    </script>
+  </body>
+</html>
